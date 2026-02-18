@@ -1,10 +1,13 @@
 <?php
 // Single Page Application - PHP Router
-$page = isset($_GET['page']) ? $_GET['page'] : 'home';
-$validPages = ['home', 'program', 'mentors', 'startups', 'news', 'faqs', 'connect', 'team', 'our-mission', 'elizabeth-elting-fund', 'mba', 'young-ambassadors', 'jobs', 'deep-tech', 'digital-health', 'digital-tech', 'life-science'];
+$page = isset($_GET['page']) ? trim($_GET['page'], '/') : 'home';
+if (empty($page)) $page = 'home';
+$validPages = ['home', 'about', 'program', 'mentors', 'startups', 'news', 'faqs', 'connect', 'team', 'our-mission', 'elizabeth-elting-fund', 'mba', 'young-ambassadors', 'jobs', 'deep-tech', 'digital-health', 'digital-tech', 'life-science'];
 if (!in_array($page, $validPages)) {
     $page = 'home';
 }
+// Map 'about' to 'home' for display
+if ($page === 'about') $page = 'home';
 
 // Page titles
 $pageTitles = [
@@ -304,6 +307,8 @@ div.header-sub-menu a,
     line-height: 1.5 !important;
     border: none !important;
     box-shadow: none !important;
+    pointer-events: auto !important;
+    cursor: pointer !important;
 }
 
 header.header .header-sub-menu a:hover,
@@ -325,6 +330,7 @@ header.header .header-sub-menu a span,
     font: inherit !important;
     background: none !important;
     background-color: inherit !important;
+    pointer-events: none !important;
 }
 
 /* Hide empty submenus */
@@ -348,7 +354,7 @@ header.header .header-sub-menu a span,
 <header class="header bg-c-grey js-c-button" id='navbar' data-variant='default' style="top: 0px;">
     <div class="header__right">
         <h1>
-            <a title="go to homepage" href="index.php" class="flex" style="display: flex; align-items: center;">
+            <a title="go to homepage" href="/efl/" class="flex" style="display: flex; align-items: center;">
                 <img src="https://endlessfrontierlabs.com/wp-content/themes/efl/assets/brand/logo.svg" alt="Endless Frontier Labs" style="height: 40px; width: auto;">
             </a>
         </h1>
@@ -357,81 +363,81 @@ header.header .header-sub-menu a span,
     <nav>
         <ul class="header__nav">
                             <li class="header__nav__link group relative">
-                    <a title="go to home" href="index.php" class="fs-p2s js-color-text text-white mix-blend-difference flex">ABOUT</a>					
+                    <a title="go to home" href="/efl/" class="fs-p2s js-color-text text-white mix-blend-difference flex">ABOUT</a>					
                     <span class="absolute block bottom-5 right-0 left-0 w-0 h-1 bg-c-purple group-hover:w-[calc(100%-1.4rem)] mx-auto duration-30"></span>
 					<div class="header-sub-menu">
-														<a href="index.php?page=program">
+														<a href="/efl/program">
 									<span>
 										PROGRAM									</span>
 								</a>
-														<a href="index.php?page=our-mission">
+														<a href="/efl/our-mission">
 									<span>
 										MISSION & VALUES									</span>
 								</a>
-														<a href="index.php?page=elizabeth-elting-fund">
+														<a href="/efl/elizabeth-elting-fund">
 									<span>
 										ELIZABETH ELTING FUND									</span>
 								</a>
-														<a href="index.php?page=mba">
+														<a href="/efl/mba">
 									<span>
 										STERN MBA									</span>
 								</a>
-														<a href="index.php?page=young-ambassadors">
+														<a href="/efl/young-ambassadors">
 									<span>
 										YOUNG AMBASSADORS									</span>
 								</a>
-														<a href="index.php?page=team">
+														<a href="/efl/team">
 									<span>
 										TEAM									</span>
 								</a>
 											</div>
                 </li>
                             <li class="header__nav__link group relative">
-                    <a title="go to program" href="index.php?page=program" class="fs-p2s js-color-text text-white mix-blend-difference flex">PROGRAM</a>					
+                    <a title="go to program" href="/efl/program" class="fs-p2s js-color-text text-white mix-blend-difference flex">PROGRAM</a>					
                     <span class="absolute block bottom-5 right-0 left-0 w-0 h-1 bg-c-purple group-hover:w-[calc(100%-1.4rem)] mx-auto duration-30"></span>
 					<div class="header-sub-menu">
-														<a href="index.php?page=deep-tech">
+														<a href="/efl/deep-tech">
 									<span>
 										DEEP TECH									</span>
 								</a>
-														<a href="index.php?page=digital-health">
+														<a href="/efl/digital-health">
 									<span>
 										DIGITAL HEALTH									</span>
 								</a>
-														<a href="index.php?page=digital-tech">
+														<a href="/efl/digital-tech">
 									<span>
 										DIGITAL TECH									</span>
 								</a>
-														<a href="index.php?page=life-science">
+														<a href="/efl/life-science">
 									<span>
 										LIFE SCIENCE									</span>
 								</a>
 											</div>
                 </li>
                             <li class="header__nav__link group relative">
-                    <a title="go to mentors" href="index.php?page=mentors" class="fs-p2s js-color-text text-white mix-blend-difference flex">MENTORS</a>					
+                    <a title="go to mentors" href="/efl/mentors" class="fs-p2s js-color-text text-white mix-blend-difference flex">MENTORS</a>					
                     <span class="absolute block bottom-5 right-0 left-0 w-0 h-1 bg-c-purple group-hover:w-[calc(100%-1.4rem)] mx-auto duration-30"></span>
                 </li>
                             <li class="header__nav__link group relative">
-                    <a title="go to startups" href="index.php?page=startups" class="fs-p2s js-color-text text-white mix-blend-difference flex">STARTUPS</a>					
+                    <a title="go to startups" href="/efl/startups" class="fs-p2s js-color-text text-white mix-blend-difference flex">STARTUPS</a>					
                     <span class="absolute block bottom-5 right-0 left-0 w-0 h-1 bg-c-purple group-hover:w-[calc(100%-1.4rem)] mx-auto duration-30"></span>
                 </li>
                             <li class="header__nav__link group relative">
-                    <a title="go to news" href="index.php?page=news" class="fs-p2s js-color-text text-white mix-blend-difference flex">NEWS</a>					
+                    <a title="go to news" href="/efl/news" class="fs-p2s js-color-text text-white mix-blend-difference flex">NEWS</a>					
                     <span class="absolute block bottom-5 right-0 left-0 w-0 h-1 bg-c-purple group-hover:w-[calc(100%-1.4rem)] mx-auto duration-30"></span>
 					<div class="header-sub-menu">
-														<a href="index.php?page=jobs">
+														<a href="/efl/jobs">
 									<span>
 										JOBS									</span>
 								</a>
 											</div>
                 </li>
                             <li class="header__nav__link group relative">
-                    <a title="go to faqs" href="index.php?page=faqs" class="fs-p2s js-color-text text-white mix-blend-difference flex">FAQ</a>					
+                    <a title="go to faqs" href="/efl/faqs" class="fs-p2s js-color-text text-white mix-blend-difference flex">FAQ</a>					
                     <span class="absolute block bottom-5 right-0 left-0 w-0 h-1 bg-c-purple group-hover:w-[calc(100%-1.4rem)] mx-auto duration-30"></span>
                 </li>
                             <li class="header__nav__link group relative">
-                    <a title="go to connect" href="index.php?page=connect" class="fs-p2s js-color-text text-white mix-blend-difference flex">CONNECT</a>					
+                    <a title="go to connect" href="/efl/connect" class="fs-p2s js-color-text text-white mix-blend-difference flex">CONNECT</a>					
                     <span class="absolute block bottom-5 right-0 left-0 w-0 h-1 bg-c-purple group-hover:w-[calc(100%-1.4rem)] mx-auto duration-30"></span>
                 </li>
             
@@ -460,7 +466,7 @@ header.header .header-sub-menu a span,
 <div id="menu" class="bg-gradient-to-r from-c-purple to-c-purple-light fixed top-0 left-0 w-full min-h-[100vh] lg:h-[100vh] z-[10000] js-c-button" data-variant='difference'>
     <div class="relative h-100 grid grid-cols-[0px,3fr,24vw] sm:grid-cols-[15vw,3fr,15vw] sm:place-items-center">
         <div></div>
-        <a href="index.php" class="w-full h-full flex items-center sm:justify-center pl-20 sm:pl-0">
+        <a href="/efl/" class="w-full h-full flex items-center sm:justify-center pl-20 sm:pl-0">
             <img class="w-228 max-w-[40vw] object-cover" src="https://endlessfrontierlabs.com/wp-content/themes/efl/assets/efl-logo.svg" alt="EFL">
         </a>
         <div class="flex items-center gap-15 cursor-pointer js-close-menu mr-20 sm:mr-0">
@@ -480,17 +486,17 @@ header.header .header-sub-menu a span,
                             </svg>
                         </p>
                         <div class="js-menuItemsMobile block lg:hidden mt-20 mb-40" data-menuID="1">
-                            									<a href="index.php?page=program" class="js-close-menu border-t last:border-b border-solid border-white cursor-pointer block py-10 px-10 text-white font-[500] font-manrope uppercase" style="font-size:1.8rem;">
+                            									<a href="/efl/program" class="js-close-menu border-t last:border-b border-solid border-white cursor-pointer block py-10 px-10 text-white font-[500] font-manrope uppercase" style="font-size:1.8rem;">
 											program									</a>
-                            									<a href="index.php?page=our-mission" class="js-close-menu border-t last:border-b border-solid border-white cursor-pointer block py-10 px-10 text-white font-[500] font-manrope uppercase" style="font-size:1.8rem;">
+                            									<a href="/efl/our-mission" class="js-close-menu border-t last:border-b border-solid border-white cursor-pointer block py-10 px-10 text-white font-[500] font-manrope uppercase" style="font-size:1.8rem;">
 											mission and values									</a>
-                            									<a href="index.php?page=elizabeth-elting-fund" class="js-close-menu border-t last:border-b border-solid border-white cursor-pointer block py-10 px-10 text-white font-[500] font-manrope uppercase" style="font-size:1.8rem;">
+                            									<a href="/efl/elizabeth-elting-fund" class="js-close-menu border-t last:border-b border-solid border-white cursor-pointer block py-10 px-10 text-white font-[500] font-manrope uppercase" style="font-size:1.8rem;">
 											ELIZABETH ELTING FUND									</a>
-                            									<a href="index.php?page=mba" class="js-close-menu border-t last:border-b border-solid border-white cursor-pointer block py-10 px-10 text-white font-[500] font-manrope uppercase" style="font-size:1.8rem;">
+                            									<a href="/efl/mba" class="js-close-menu border-t last:border-b border-solid border-white cursor-pointer block py-10 px-10 text-white font-[500] font-manrope uppercase" style="font-size:1.8rem;">
 											Stern MBA									</a>
-                            									<a href="index.php?page=young-ambassadors" class="js-close-menu border-t last:border-b border-solid border-white cursor-pointer block py-10 px-10 text-white font-[500] font-manrope uppercase" style="font-size:1.8rem;">
+                            									<a href="/efl/young-ambassadors" class="js-close-menu border-t last:border-b border-solid border-white cursor-pointer block py-10 px-10 text-white font-[500] font-manrope uppercase" style="font-size:1.8rem;">
 											YOUNG AMBASSADORS									</a>
-                            									<a href="index.php?page=team" class="js-close-menu border-t last:border-b border-solid border-white cursor-pointer block py-10 px-10 text-white font-[500] font-manrope uppercase" style="font-size:1.8rem;">
+                            									<a href="/efl/team" class="js-close-menu border-t last:border-b border-solid border-white cursor-pointer block py-10 px-10 text-white font-[500] font-manrope uppercase" style="font-size:1.8rem;">
 											team									</a>
                                                     </div>
                     </div>
@@ -503,36 +509,36 @@ header.header .header-sub-menu a span,
                             </svg>
                         </p>
                         <div class="js-menuItemsMobile block lg:hidden mt-20 mb-40" data-menuID="2">
-                            									<a href="index.php?page=deep-tech" class="js-close-menu border-t last:border-b border-solid border-white cursor-pointer block py-10 px-10 text-white font-[500] font-manrope uppercase" style="font-size:1.8rem;">
+                            									<a href="/efl/deep-tech" class="js-close-menu border-t last:border-b border-solid border-white cursor-pointer block py-10 px-10 text-white font-[500] font-manrope uppercase" style="font-size:1.8rem;">
 											DEEP TECH									</a>
-                            									<a href="index.php?page=digital-health" class="js-close-menu border-t last:border-b border-solid border-white cursor-pointer block py-10 px-10 text-white font-[500] font-manrope uppercase" style="font-size:1.8rem;">
+                            									<a href="/efl/digital-health" class="js-close-menu border-t last:border-b border-solid border-white cursor-pointer block py-10 px-10 text-white font-[500] font-manrope uppercase" style="font-size:1.8rem;">
 											DIGITAL HEALTH									</a>
-                            									<a href="index.php?page=digital-tech" class="js-close-menu border-t last:border-b border-solid border-white cursor-pointer block py-10 px-10 text-white font-[500] font-manrope uppercase" style="font-size:1.8rem;">
+                            									<a href="/efl/digital-tech" class="js-close-menu border-t last:border-b border-solid border-white cursor-pointer block py-10 px-10 text-white font-[500] font-manrope uppercase" style="font-size:1.8rem;">
 											DIGITAL TECH									</a>
-                            									<a href="index.php?page=life-science" class="js-close-menu border-t last:border-b border-solid border-white cursor-pointer block py-10 px-10 text-white font-[500] font-manrope uppercase" style="font-size:1.8rem;">
+                            									<a href="/efl/life-science" class="js-close-menu border-t last:border-b border-solid border-white cursor-pointer block py-10 px-10 text-white font-[500] font-manrope uppercase" style="font-size:1.8rem;">
 											LIFE SCIENCE									</a>
                                                     </div>
                     </div>
                                     <!-- one -->
                     <div>
-						<a href="index.php?page=mentors" class="js-close-menu navitem flex items-center gap-20 text-white font-anton tracking-[-0.02em] cursor-pointer duration-30 w-fit js-menu uppercase" data-menuID="3" >
+						<a href="/efl/mentors" class="js-close-menu navitem flex items-center gap-20 text-white font-anton tracking-[-0.02em] cursor-pointer duration-30 w-fit js-menu uppercase" data-menuID="3" >
 
                             <span class="fs-p3">03</span>MENTORS                        </a>
                         <div class="js-menuItemsMobile lg:hidden mt-20 mb-40 border-t border-b border-solid border-white flex items-center justify-center" data-menuID="3">
 
-							<a href="index.php?page=mentors" class="image inline-block py-20">
+							<a href="/efl/mentors" class="image inline-block py-20">
                                 <img style="aspect-ratio:570/350;" class="js-close-menu w-[500px] max-w-full h-fit object-cover cp-48" src="https://endlessfrontierlabs.com/wp-content/uploads/2024/09/9.png" alt="EFL">
                             </a>
                         </div>
                     </div>
                                 <!-- one -->
                     <div>
-						<a href="index.php?page=startups" class="js-close-menu navitem flex items-center gap-20 text-white font-anton tracking-[-0.02em] cursor-pointer duration-30 w-fit js-menu uppercase" data-menuID="4" >
+						<a href="/efl/startups" class="js-close-menu navitem flex items-center gap-20 text-white font-anton tracking-[-0.02em] cursor-pointer duration-30 w-fit js-menu uppercase" data-menuID="4" >
 
                             <span class="fs-p3">04</span>STARTUPS                        </a>
                         <div class="js-menuItemsMobile lg:hidden mt-20 mb-40 border-t border-b border-solid border-white flex items-center justify-center" data-menuID="4">
 
-							<a href="index.php?page=startups" class="image inline-block py-20">
+							<a href="/efl/startups" class="image inline-block py-20">
                                 <img style="aspect-ratio:570/350;" class="js-close-menu w-[500px] max-w-full h-fit object-cover cp-48" src="https://endlessfrontierlabs.com/wp-content/uploads/2023/05/startups-hero.jpg" alt="EFL">
                             </a>
                         </div>
@@ -546,9 +552,9 @@ header.header .header-sub-menu a span,
                             </svg>
                         </p>
                         <div class="js-menuItemsMobile block lg:hidden mt-20 mb-40" data-menuID="5">
-                            									<a href="index.php?page=news" class="js-close-menu border-t last:border-b border-solid border-white cursor-pointer block py-10 px-10 text-white font-[500] font-manrope uppercase" style="font-size:1.8rem;">
+                            									<a href="/efl/news" class="js-close-menu border-t last:border-b border-solid border-white cursor-pointer block py-10 px-10 text-white font-[500] font-manrope uppercase" style="font-size:1.8rem;">
 											news									</a>
-                            									<a href="index.php?page=jobs" class="js-close-menu border-t last:border-b border-solid border-white cursor-pointer block py-10 px-10 text-white font-[500] font-manrope uppercase" style="font-size:1.8rem;">
+                            									<a href="/efl/jobs" class="js-close-menu border-t last:border-b border-solid border-white cursor-pointer block py-10 px-10 text-white font-[500] font-manrope uppercase" style="font-size:1.8rem;">
 											jobs									</a>
                                                     </div>
                     </div>
@@ -561,7 +567,7 @@ header.header .header-sub-menu a span,
                             </svg>
                         </p>
                         <div class="js-menuItemsMobile block lg:hidden mt-20 mb-40" data-menuID="6">
-                            									<a href="index.php?page=faqs" class="js-close-menu border-t last:border-b border-solid border-white cursor-pointer block py-10 px-10 text-white font-[500] font-manrope uppercase" style="font-size:1.8rem;">
+                            									<a href="/efl/faqs" class="js-close-menu border-t last:border-b border-solid border-white cursor-pointer block py-10 px-10 text-white font-[500] font-manrope uppercase" style="font-size:1.8rem;">
 											faqs									</a>
                                                     </div>
                     </div>
@@ -574,7 +580,7 @@ header.header .header-sub-menu a span,
                             </svg>
                         </p>
                         <div class="js-menuItemsMobile block lg:hidden mt-20 mb-40" data-menuID="7">
-                            									<a href="index.php?page=connect" class="js-close-menu border-t last:border-b border-solid border-white cursor-pointer block py-10 px-10 text-white font-[500] font-manrope uppercase" style="font-size:1.8rem;">
+                            									<a href="/efl/connect" class="js-close-menu border-t last:border-b border-solid border-white cursor-pointer block py-10 px-10 text-white font-[500] font-manrope uppercase" style="font-size:1.8rem;">
 											Connect									</a>
                                                     </div>
                     </div>
@@ -589,70 +595,70 @@ header.header .header-sub-menu a span,
 
                                 <!-- group -->
                     <div id="js_menuItem" class="js-menuItems" data-menuID="1">
-                    								<a href="index.php?page=program" class="js-close-menu border-t last:border-b border-solid border-white cursor-pointer block py-20 px-55 text-white uppercase font-[500] font-manrope" style="font-size:2.1rem;">						
+                    								<a href="/efl/program" class="js-close-menu border-t last:border-b border-solid border-white cursor-pointer block py-20 px-55 text-white uppercase font-[500] font-manrope" style="font-size:2.1rem;">						
                                     program                                </a>                               
 
-                    								<a href="index.php?page=our-mission" class="js-close-menu border-t last:border-b border-solid border-white cursor-pointer block py-20 px-55 text-white uppercase font-[500] font-manrope" style="font-size:2.1rem;">						
+                    								<a href="/efl/our-mission" class="js-close-menu border-t last:border-b border-solid border-white cursor-pointer block py-20 px-55 text-white uppercase font-[500] font-manrope" style="font-size:2.1rem;">						
                                     mission and values                                </a>                               
 
-                    								<a href="index.php?page=elizabeth-elting-fund" class="js-close-menu border-t last:border-b border-solid border-white cursor-pointer block py-20 px-55 text-white uppercase font-[500] font-manrope" style="font-size:2.1rem;">						
+                    								<a href="/efl/elizabeth-elting-fund" class="js-close-menu border-t last:border-b border-solid border-white cursor-pointer block py-20 px-55 text-white uppercase font-[500] font-manrope" style="font-size:2.1rem;">						
                                     ELIZABETH ELTING FUND                                </a>                               
 
-                    								<a href="index.php?page=mba" class="js-close-menu border-t last:border-b border-solid border-white cursor-pointer block py-20 px-55 text-white uppercase font-[500] font-manrope" style="font-size:2.1rem;">						
+                    								<a href="/efl/mba" class="js-close-menu border-t last:border-b border-solid border-white cursor-pointer block py-20 px-55 text-white uppercase font-[500] font-manrope" style="font-size:2.1rem;">						
                                     Stern MBA                                </a>                               
 
-                    								<a href="index.php?page=young-ambassadors" class="js-close-menu border-t last:border-b border-solid border-white cursor-pointer block py-20 px-55 text-white uppercase font-[500] font-manrope" style="font-size:2.1rem;">						
+                    								<a href="/efl/young-ambassadors" class="js-close-menu border-t last:border-b border-solid border-white cursor-pointer block py-20 px-55 text-white uppercase font-[500] font-manrope" style="font-size:2.1rem;">						
                                     YOUNG AMBASSADORS                                </a>                               
 
-                    								<a href="index.php?page=team" class="js-close-menu border-t last:border-b border-solid border-white cursor-pointer block py-20 px-55 text-white uppercase font-[500] font-manrope" style="font-size:2.1rem;">						
+                    								<a href="/efl/team" class="js-close-menu border-t last:border-b border-solid border-white cursor-pointer block py-20 px-55 text-white uppercase font-[500] font-manrope" style="font-size:2.1rem;">						
                                     team                                </a>                               
 
                                         </div>
                                     <!-- group -->
                     <div id="js_menuItem" class="js-menuItems" data-menuID="2">
-                    								<a href="index.php?page=deep-tech" class="js-close-menu border-t last:border-b border-solid border-white cursor-pointer block py-20 px-55 text-white uppercase font-[500] font-manrope" style="font-size:2.1rem;">						
+                    								<a href="/efl/deep-tech" class="js-close-menu border-t last:border-b border-solid border-white cursor-pointer block py-20 px-55 text-white uppercase font-[500] font-manrope" style="font-size:2.1rem;">						
                                     DEEP TECH                                </a>                               
 
-                    								<a href="index.php?page=digital-health" class="js-close-menu border-t last:border-b border-solid border-white cursor-pointer block py-20 px-55 text-white uppercase font-[500] font-manrope" style="font-size:2.1rem;">						
+                    								<a href="/efl/digital-health" class="js-close-menu border-t last:border-b border-solid border-white cursor-pointer block py-20 px-55 text-white uppercase font-[500] font-manrope" style="font-size:2.1rem;">						
                                     DIGITAL HEALTH                                </a>                               
 
-                    								<a href="index.php?page=digital-tech" class="js-close-menu border-t last:border-b border-solid border-white cursor-pointer block py-20 px-55 text-white uppercase font-[500] font-manrope" style="font-size:2.1rem;">						
+                    								<a href="/efl/digital-tech" class="js-close-menu border-t last:border-b border-solid border-white cursor-pointer block py-20 px-55 text-white uppercase font-[500] font-manrope" style="font-size:2.1rem;">						
                                     DIGITAL TECH                                </a>                               
 
-                    								<a href="index.php?page=life-science" class="js-close-menu border-t last:border-b border-solid border-white cursor-pointer block py-20 px-55 text-white uppercase font-[500] font-manrope" style="font-size:2.1rem;">						
+                    								<a href="/efl/life-science" class="js-close-menu border-t last:border-b border-solid border-white cursor-pointer block py-20 px-55 text-white uppercase font-[500] font-manrope" style="font-size:2.1rem;">						
                                     LIFE SCIENCE                                </a>                               
 
                                         </div>
                                     <!-- one -->
                     <div class="js-menuItems py-20 border-t border-b border-solid border-white flex items-center justify-center" data-menuID="3">
-                        <a href="index.php?page=mentors" class="image">
+                        <a href="/efl/mentors" class="image">
                             <img style="aspect-ratio:570/350;" class="js-close-menu w-[500px] max-w-full h-fit object-cover cp-48" src="https://endlessfrontierlabs.com/wp-content/uploads/2024/09/9.png" alt="EFL">
                         </a>
                     </div>
                                 <!-- one -->
                     <div class="js-menuItems py-20 border-t border-b border-solid border-white flex items-center justify-center" data-menuID="4">
-                        <a href="index.php?page=startups" class="image">
+                        <a href="/efl/startups" class="image">
                             <img style="aspect-ratio:570/350;" class="js-close-menu w-[500px] max-w-full h-fit object-cover cp-48" src="https://endlessfrontierlabs.com/wp-content/uploads/2023/05/startups-hero.jpg" alt="EFL">
                         </a>
                     </div>
                                 <!-- group -->
                     <div id="js_menuItem" class="js-menuItems" data-menuID="5">
-                    								<a href="index.php?page=news" class="js-close-menu border-t last:border-b border-solid border-white cursor-pointer block py-20 px-55 text-white uppercase font-[500] font-manrope" style="font-size:2.1rem;">						
+                    								<a href="/efl/news" class="js-close-menu border-t last:border-b border-solid border-white cursor-pointer block py-20 px-55 text-white uppercase font-[500] font-manrope" style="font-size:2.1rem;">						
                                     news                                </a>                               
 
-                    								<a href="index.php?page=jobs" class="js-close-menu border-t last:border-b border-solid border-white cursor-pointer block py-20 px-55 text-white uppercase font-[500] font-manrope" style="font-size:2.1rem;">						
+                    								<a href="/efl/jobs" class="js-close-menu border-t last:border-b border-solid border-white cursor-pointer block py-20 px-55 text-white uppercase font-[500] font-manrope" style="font-size:2.1rem;">						
                                     jobs                                </a>                               
 
                                         </div>
                                     <!-- group -->
                     <div id="js_menuItem" class="js-menuItems" data-menuID="6">
-                    								<a href="index.php?page=faqs" class="js-close-menu border-t last:border-b border-solid border-white cursor-pointer block py-20 px-55 text-white uppercase font-[500] font-manrope" style="font-size:2.1rem;">						
+                    								<a href="/efl/faqs" class="js-close-menu border-t last:border-b border-solid border-white cursor-pointer block py-20 px-55 text-white uppercase font-[500] font-manrope" style="font-size:2.1rem;">						
                                     faqs                                </a>                               
 
                                         </div>
                                     <!-- group -->
                     <div id="js_menuItem" class="js-menuItems" data-menuID="7">
-                    								<a href="index.php?page=connect" class="js-close-menu border-t last:border-b border-solid border-white cursor-pointer block py-20 px-55 text-white uppercase font-[500] font-manrope" style="font-size:2.1rem;">						
+                    								<a href="/efl/connect" class="js-close-menu border-t last:border-b border-solid border-white cursor-pointer block py-20 px-55 text-white uppercase font-[500] font-manrope" style="font-size:2.1rem;">						
                                     Connect                                </a>                               
 
                                         </div>
@@ -969,7 +975,7 @@ header.header .header-sub-menu a span,
             
 <button class="js-magnetic-button w-fit p-50 m-[-50px]" title="Go to program page" name="Go to program page" type="">
             <a
-            href="index.php?page=program"
+            href="/efl/program"
             class="button js-c-button large"
             data-magnetic="1.8"
             data-variant="default"
@@ -1104,7 +1110,7 @@ header.header .header-sub-menu a span,
             
 <button class="js-magnetic-button w-fit p-50 m-[-50px]" title="Go to news page" name="Go to news page" type="">
             <a
-            href="index.php?page=news"
+            href="/efl/news"
             class="button js-c-button large"
             data-magnetic="1.8"
             data-variant="default"
@@ -1229,7 +1235,7 @@ header.header .header-sub-menu a span,
         
 <button class="js-magnetic-button w-fit p-50 m-[-50px]" title="Go to news page" name="Go to news page" type="">
             <a
-            href="index.php?page=news"
+            href="/efl/news"
             class="button js-c-button large"
             data-magnetic="1.8"
             data-variant="outlineDark"
@@ -1268,7 +1274,7 @@ header.header .header-sub-menu a span,
         
 <button class="js-magnetic-button w-fit p-50 m-[-50px]" title="Go to mentors page" name="Go to mentors page" type="">
             <a
-            href="index.php?page=mentors"
+            href="/efl/mentors"
             class="button js-c-button large"
             data-magnetic="1.8"
             data-variant="outlineDark"
@@ -1636,7 +1642,7 @@ header.header .header-sub-menu a span,
                         <div class="w-full flex flex-row md:flex-col items-center md:items-start justify-between gap-20 pb-22">
                             <p class="mb-26 fs-p1 w-full max-w-[300px] md:max-w-full js-color-text text-c-black">For startups advancing society through software, data, analytics, and artificial intelligence (AI) or machine learning (ML).</p>
                             <button class="js-magnetic-button w-fit p-50 m-[-50px]" title="Learn more about digital tech" name="Learn more about digital tech" type="">
-                                <a href="index.php?page=digital-tech" class="button js-c-button large" data-magnetic="1.8" data-variant="outlineDark" data-size="large" data-type="text" data-src="https://endlessfrontierlabs.com/wp-content/themes/efl/assets/icons/plus.svg" data-fill="stroke" data-cursor-text="LEARN MORE" data-cursor-text2="" title="Learn more about digital tech" name="Learn more about digital tech" target="">
+                                <a href="/efl/digital-tech" class="button js-c-button large" data-magnetic="1.8" data-variant="outlineDark" data-size="large" data-type="text" data-src="https://endlessfrontierlabs.com/wp-content/themes/efl/assets/icons/plus.svg" data-fill="stroke" data-cursor-text="LEARN MORE" data-cursor-text2="" title="Learn more about digital tech" name="Learn more about digital tech" target="">
                                     <div class="button__content w-full h-full outlineDark">
                                         <div class="line " style=""></div>
                                         <div class="button__content__center">
@@ -1666,7 +1672,7 @@ header.header .header-sub-menu a span,
                         <div class="w-full flex flex-row md:flex-col items-center md:items-start justify-between gap-20 pb-22">
                             <p class="mb-26 fs-p1 w-full max-w-[300px] md:max-w-full js-color-text text-c-black">For startups actively innovating in healthcare, medicine, and biology.</p>
                             <button class="js-magnetic-button w-fit p-50 m-[-50px]" title="Learn more about life sciences" name="Learn more about life sciences" type="">
-                                <a href="index.php?page=life-science" class="button js-c-button large" data-magnetic="1.8" data-variant="outlineDark" data-size="large" data-type="text" data-src="https://endlessfrontierlabs.com/wp-content/themes/efl/assets/icons/plus.svg" data-fill="stroke" data-cursor-text="LEARN MORE" data-cursor-text2="" title="Learn more about life sciences" name="Learn more about life sciences" target="">
+                                <a href="/efl/life-science" class="button js-c-button large" data-magnetic="1.8" data-variant="outlineDark" data-size="large" data-type="text" data-src="https://endlessfrontierlabs.com/wp-content/themes/efl/assets/icons/plus.svg" data-fill="stroke" data-cursor-text="LEARN MORE" data-cursor-text2="" title="Learn more about life sciences" name="Learn more about life sciences" target="">
                                     <div class="button__content w-full h-full outlineDark">
                                         <div class="line " style=""></div>
                                         <div class="button__content__center">
@@ -1696,7 +1702,7 @@ header.header .header-sub-menu a span,
                         <div class="w-full flex flex-row md:flex-col items-center md:items-start justify-between gap-20 pb-22">
                             <p class="mb-26 fs-p1 w-full max-w-[300px] md:max-w-full js-color-text text-c-black">For startups advancing technologies in the physical and material sciences.</p>
                             <button class="js-magnetic-button w-fit p-50 m-[-50px]" title="Learn more about deep tech" name="Learn more about deep tech" type="">
-                                <a href="index.php?page=deep-tech" class="button js-c-button large" data-magnetic="1.8" data-variant="outlineDark" data-size="large" data-type="text" data-src="https://endlessfrontierlabs.com/wp-content/themes/efl/assets/icons/plus.svg" data-fill="stroke" data-cursor-text="LEARN MORE" data-cursor-text2="" title="Learn more about deep tech" name="Learn more about deep tech" target="">
+                                <a href="/efl/deep-tech" class="button js-c-button large" data-magnetic="1.8" data-variant="outlineDark" data-size="large" data-type="text" data-src="https://endlessfrontierlabs.com/wp-content/themes/efl/assets/icons/plus.svg" data-fill="stroke" data-cursor-text="LEARN MORE" data-cursor-text2="" title="Learn more about deep tech" name="Learn more about deep tech" target="">
                                     <div class="button__content w-full h-full outlineDark">
                                         <div class="line " style=""></div>
                                         <div class="button__content__center">
@@ -1726,7 +1732,7 @@ header.header .header-sub-menu a span,
                         <div class="w-full flex flex-row md:flex-col items-center md:items-start justify-between gap-20 pb-22">
                             <p class="mb-26 fs-p1 w-full max-w-[300px] md:max-w-full js-color-text text-c-black">For startups with digital solutions for diagnostics, devices, telemedicine, wearables, and more.</p>
                             <button class="js-magnetic-button w-fit p-50 m-[-50px]" title="Learn more about digital health" name="Learn more about digital health" type="">
-                                <a href="index.php?page=digital-health" class="button js-c-button large" data-magnetic="1.8" data-variant="outlineDark" data-size="large" data-type="text" data-src="https://endlessfrontierlabs.com/wp-content/themes/efl/assets/icons/plus.svg" data-fill="stroke" data-cursor-text="LEARN MORE" data-cursor-text2="" title="Learn more about digital health" name="Learn more about digital health" target="">
+                                <a href="/efl/digital-health" class="button js-c-button large" data-magnetic="1.8" data-variant="outlineDark" data-size="large" data-type="text" data-src="https://endlessfrontierlabs.com/wp-content/themes/efl/assets/icons/plus.svg" data-fill="stroke" data-cursor-text="LEARN MORE" data-cursor-text2="" title="Learn more about digital health" name="Learn more about digital health" target="">
                                     <div class="button__content w-full h-full outlineDark">
                                         <div class="line " style=""></div>
                                         <div class="button__content__center">
@@ -1755,7 +1761,7 @@ header.header .header-sub-menu a span,
 
         <div class="successes__btn-desktop">
             <button class="js-magnetic-button w-fit p-50 m-[-50px]" title="See all news" name="See all news" type="">
-                <a href="index.php?page=news" class="button js-c-button large" data-magnetic="1.8" data-variant="outlineDark" data-size="large" data-type="text" data-src="https://endlessfrontierlabs.com/wp-content/themes/efl/assets/icons/plus.svg" data-fill="stroke" data-cursor-text="SEE ALL" data-cursor-text2="NEWS" title="See all news" name="See all news" target="">
+                <a href="/efl/news" class="button js-c-button large" data-magnetic="1.8" data-variant="outlineDark" data-size="large" data-type="text" data-src="https://endlessfrontierlabs.com/wp-content/themes/efl/assets/icons/plus.svg" data-fill="stroke" data-cursor-text="SEE ALL" data-cursor-text2="NEWS" title="See all news" name="See all news" target="">
                     <div class="button__content w-full h-full outlineDark">
                         <div class="line " style=""></div>
                         <div class="button__content__center">
@@ -1814,7 +1820,7 @@ header.header .header-sub-menu a span,
 
     <div class="successes__btn-mobile">
         <button class="js-magnetic-button w-fit p-50 m-[-50px]" title="See all news" name="See all news" type="">
-            <a href="index.php?page=news" class="button js-c-button large" data-magnetic="1.8" data-variant="outlineDark" data-size="large" data-type="text" data-src="https://endlessfrontierlabs.com/wp-content/themes/efl/assets/icons/plus.svg" data-fill="stroke" data-cursor-text="SEE ALL" data-cursor-text2="NEWS" title="See all news" name="See all news" target="">
+            <a href="/efl/news" class="button js-c-button large" data-magnetic="1.8" data-variant="outlineDark" data-size="large" data-type="text" data-src="https://endlessfrontierlabs.com/wp-content/themes/efl/assets/icons/plus.svg" data-fill="stroke" data-cursor-text="SEE ALL" data-cursor-text2="NEWS" title="See all news" name="See all news" target="">
                 <div class="button__content w-full h-full outlineDark">
                     <div class="line " style=""></div>
                     <div class="button__content__center">
@@ -2145,7 +2151,7 @@ $currentTrackLabel = empty($filterTrack) ? 'ALL TRACKS' : strtoupper(str_replace
                 <p class="mb-56 js-s-lines js-color-text text-c-black">EFL mentors are experts in their fields, and bring deep industry roots and fundraising expertise to every interaction with their startups.</p>
                 
                 <button class="js-magnetic-button w-fit p-50 m-[-50px]" title="scroll down" name="scroll down" type="">
-                    <a href="index.php?page=program" class="button js-c-button large" data-magnetic="1.8" data-variant="outlineDark" data-size="large" data-type="text" data-fill="stroke">
+                    <a href="/efl/program" class="button js-c-button large" data-magnetic="1.8" data-variant="outlineDark" data-size="large" data-type="text" data-fill="stroke">
                         <div class="button__content w-full h-full outlineDark">
                             <div class="line " style=""></div>
                             <div class="button__content__center">
@@ -2162,7 +2168,7 @@ $currentTrackLabel = empty($filterTrack) ? 'ALL TRACKS' : strtoupper(str_replace
         <div class="card-grid custom-mentors-body">
             <?php if (count($filteredMentors) === 0): ?>
                 <div class="col-span-full text-center py-40">
-                    <p class="fs-p1 text-c-black">No mentors found matching your criteria. <a href="index.php?page=mentors" class="text-c-purple underline">Clear filters</a></p>
+                    <p class="fs-p1 text-c-black">No mentors found matching your criteria. <a href="/efl/mentors" class="text-c-purple underline">Clear filters</a></p>
                 </div>
             <?php else: ?>
                 <?php foreach ($filteredMentors as $mentor): ?>
@@ -2983,7 +2989,7 @@ $totalStartups = count($startups);
                 <a href="#" id="clearFilters" class="text-c-purple underline mb-30 inline-block" style="display: none;" onclick="clearAllStartupFilters(); return false;">Clear all filters</a>
                 
                 <button class="js-magnetic-button w-fit p-50 m-[-50px]" title="learn more" name="learn more" type="">
-                    <a href="index.php?page=program" class="button js-c-button large" data-magnetic="1.8" data-variant="outlineDark" data-size="large" data-type="text" data-fill="stroke">
+                    <a href="/efl/program" class="button js-c-button large" data-magnetic="1.8" data-variant="outlineDark" data-size="large" data-type="text" data-fill="stroke">
                         <div class="button__content w-full h-full outlineDark">
                             <div class="line " style=""></div>
                             <div class="button__content__center">
@@ -5827,7 +5833,7 @@ window.jobsLoadMore = function() {
                 <div class="hidden lg:block">
                     <button class="js-magnetic-button w-fit p-50 m-[-50px]" title="" name="" type="">
             <a
-            href="index.php?page=mentors"
+            href="/efl/mentors"
             class="button js-c-button large"
             data-magnetic="1.8"
             data-variant="outlineDark"
@@ -6181,7 +6187,7 @@ window.jobsLoadMore = function() {
                 <div class="hidden lg:block">
                     <button class="js-magnetic-button w-fit p-50 m-[-50px]" title="" name="" type="">
             <a
-            href="index.php?page=mentors"
+            href="/efl/mentors"
             class="button js-c-button large"
             data-magnetic="1.8"
             data-variant="outlineDark"
@@ -6509,7 +6515,7 @@ The startup represented here is a graduate of Endless Frontier Labs' predecessor
                 <p class="fs-p1 js-s-lines"><p>EFL mentors are industry leaders, successful entrepreneurs, investors, and researchers.</p>
 </p>
                 <div class="hidden lg:block">
-                    <a href="index.php?page=mentors" class="button js-c-button large" data-variant="outlineDark" data-size="large" data-type="text">
+                    <a href="/efl/mentors" class="button js-c-button large" data-variant="outlineDark" data-size="large" data-type="text">
                         <div class="button__content w-full h-full outlineDark">
                             <div class="line !border-black"></div>
                             <div class="button__content__center">
@@ -6760,7 +6766,7 @@ The startup represented here is a graduate of Endless Frontier Labs' predecessor
                 <p class="fs-p1 js-s-lines"><p>EFL mentors are industry leaders, successful entrepreneurs, investors, and researchers.</p>
 </p>
                 <div class="hidden lg:block">
-                    <a href="index.php?page=mentors" class="button js-c-button large" data-variant="outlineDark" data-size="large" data-type="text">
+                    <a href="/efl/mentors" class="button js-c-button large" data-variant="outlineDark" data-size="large" data-type="text">
                         <div class="button__content w-full h-full outlineDark">
                             <div class="line !border-black"></div>
                             <div class="button__content__center">
@@ -6894,34 +6900,34 @@ The startup represented here is a graduate of Endless Frontier Labs' predecessor
             <nav>
                 <ul class="grid grid-cols-4 lg:grid-cols-2 gap-20 lg:gap-14 items-center">
                                             <li class="item-footer">
-                            <a title="go to program" class="inline-block fs-p1s item-footer-link js-s-fade uppercase" data-delay="0.1" href="index.php">Home</a>
+                            <a title="go to program" class="inline-block fs-p1s item-footer-link js-s-fade uppercase" data-delay="0.1" href="/efl/">Home</a>
                         </li>
                                             <li class="item-footer">
-                            <a title="go to program" class="inline-block fs-p1s item-footer-link js-s-fade uppercase" data-delay="0.1" href="index.php?page=deep-tech">DEEP TECH</a>
+                            <a title="go to program" class="inline-block fs-p1s item-footer-link js-s-fade uppercase" data-delay="0.1" href="/efl/deep-tech">DEEP TECH</a>
                         </li>
                                             <li class="item-footer">
-                            <a title="go to program" class="inline-block fs-p1s item-footer-link js-s-fade uppercase" data-delay="0.1" href="index.php?page=program">Program</a>
+                            <a title="go to program" class="inline-block fs-p1s item-footer-link js-s-fade uppercase" data-delay="0.1" href="/efl/program">Program</a>
                         </li>
                                             <li class="item-footer">
-                            <a title="go to program" class="inline-block fs-p1s item-footer-link js-s-fade uppercase" data-delay="0.1" href="index.php?page=digital-health">DIGITAL HEALTH</a>
+                            <a title="go to program" class="inline-block fs-p1s item-footer-link js-s-fade uppercase" data-delay="0.1" href="/efl/digital-health">DIGITAL HEALTH</a>
                         </li>
                                             <li class="item-footer">
-                            <a title="go to program" class="inline-block fs-p1s item-footer-link js-s-fade uppercase" data-delay="0.1" href="index.php?page=startups">STARTUPS</a>
+                            <a title="go to program" class="inline-block fs-p1s item-footer-link js-s-fade uppercase" data-delay="0.1" href="/efl/startups">STARTUPS</a>
                         </li>
                                             <li class="item-footer">
-                            <a title="go to program" class="inline-block fs-p1s item-footer-link js-s-fade uppercase" data-delay="0.1" href="index.php?page=digital-tech">DIGITAL TECH</a>
+                            <a title="go to program" class="inline-block fs-p1s item-footer-link js-s-fade uppercase" data-delay="0.1" href="/efl/digital-tech">DIGITAL TECH</a>
                         </li>
                                             <li class="item-footer">
-                            <a title="go to program" class="inline-block fs-p1s item-footer-link js-s-fade uppercase" data-delay="0.1" href="index.php?page=mentors">MENTORS</a>
+                            <a title="go to program" class="inline-block fs-p1s item-footer-link js-s-fade uppercase" data-delay="0.1" href="/efl/mentors">MENTORS</a>
                         </li>
                                             <li class="item-footer">
-                            <a title="go to program" class="inline-block fs-p1s item-footer-link js-s-fade uppercase" data-delay="0.1" href="index.php?page=life-science">LIFE SCIENCES</a>
+                            <a title="go to program" class="inline-block fs-p1s item-footer-link js-s-fade uppercase" data-delay="0.1" href="/efl/life-science">LIFE SCIENCES</a>
                         </li>
                                             <li class="item-footer">
-                            <a title="go to program" class="inline-block fs-p1s item-footer-link js-s-fade uppercase" data-delay="0.1" href="index.php?page=team">TEAM</a>
+                            <a title="go to program" class="inline-block fs-p1s item-footer-link js-s-fade uppercase" data-delay="0.1" href="/efl/team">TEAM</a>
                         </li>
                                             <li class="item-footer">
-                            <a title="go to program" class="inline-block fs-p1s item-footer-link js-s-fade uppercase" data-delay="0.1" href="index.php?page=news">NEWS</a>
+                            <a title="go to program" class="inline-block fs-p1s item-footer-link js-s-fade uppercase" data-delay="0.1" href="/efl/news">NEWS</a>
                         </li>
                                     </ul>
             </nav>
@@ -7047,7 +7053,7 @@ The startup represented here is a graduate of Endless Frontier Labs' predecessor
             <div>
             <!-- <div class="w-[310px]"> -->
 <!--                 <p class="fs-h7 mb-12">CONNECT WITH US</p> -->
-				<a href="index.php?page=connect" 
+				<a href="/efl/connect" 
 				   class="fs-h7 mb-12">CONNECT WITH US</a>
                 <div class="h-1 w-full bg-c-grey mt-12 mb-11 js-s-line-anim" data-delay="0.5"></div>
                             </div>
@@ -7272,10 +7278,17 @@ The startup represented here is a graduate of Endless Frontier Labs' predecessor
             });
         }
         
-        // Close menu when clicking links inside
+        // Close menu when clicking links inside - navigate properly
         document.querySelectorAll('#menu a.js-close-menu').forEach(function(link) {
-            link.addEventListener('click', function() {
-                setTimeout(closeMenu, 50);
+            link.addEventListener('click', function(e) {
+                var href = link.getAttribute('href');
+                if (href && href.startsWith('/efl')) {
+                    e.preventDefault();
+                    closeMenu();
+                    setTimeout(function() {
+                        window.location.href = href;
+                    }, 100);
+                }
             });
         });
         
@@ -7358,6 +7371,42 @@ The startup represented here is a graduate of Endless Frontier Labs' predecessor
             if (e.key === 'Escape') {
                 closeMenu();
             }
+        });
+        
+        // Ensure all navigation links work properly from any page
+        document.querySelectorAll('a[href^="/efl/"], a[href^="/efl"]').forEach(function(link) {
+            link.addEventListener('click', function(e) {
+                var href = link.getAttribute('href');
+                if (href && href.startsWith('/efl')) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    window.location.href = href;
+                }
+            });
+        });
+        
+        // Header dropdown links - ensure they navigate
+        document.querySelectorAll('.header-sub-menu a').forEach(function(link) {
+            link.addEventListener('click', function(e) {
+                var href = link.getAttribute('href');
+                if (href && href.startsWith('/efl')) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    window.location.href = href;
+                }
+            });
+        });
+        
+        // Header main nav links
+        document.querySelectorAll('.header__nav__link > a').forEach(function(link) {
+            link.addEventListener('click', function(e) {
+                var href = link.getAttribute('href');
+                if (href && href.startsWith('/efl')) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    window.location.href = href;
+                }
+            });
         });
     });
     </script>
