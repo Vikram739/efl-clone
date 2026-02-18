@@ -202,6 +202,73 @@ var SF_LDATA = {"ajax_url":"https://endlessfrontierlabs.com/wp-admin/admin-ajax.
     color: white;
 }
 
+.button__content.outlineBlack {
+    border: 1px solid #000000;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    color: #000000;
+}
+
+/* Swiper horizontal scroll */
+.swiper {
+    overflow: visible !important;
+}
+.swiper-wrapper {
+    display: flex;
+}
+.swiper-slide {
+    flex-shrink: 0;
+    width: auto;
+}
+
+/* Global FAQ Accordion Styles */
+.faq .faq-answer,
+.faq-accordion-item .faq-accordion-answer {
+    max-height: 0;
+    height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease-out, height 0.4s ease-out;
+}
+
+.faq.active .faq-answer,
+.faq.faq-open .faq-answer,
+.faq-accordion-item.active .faq-accordion-answer,
+.faq-accordion-item.faq-open .faq-accordion-answer {
+    max-height: 600px;
+    height: auto;
+}
+
+/* Plus symbol - show by default */
+.faq .plus-symbol {
+    opacity: 1 !important;
+    transform: scale(1) !important;
+    transition: all 0.3s ease;
+}
+
+/* When FAQ is open, rotate the vertical line */
+.faq.active .plus-line,
+.faq.faq-open .plus-line {
+    transform: rotate(90deg) !important;
+    opacity: 0;
+    transition: all 0.3s ease;
+}
+
+/* Purple color for active question */
+.faq.active .faq-question .title h6,
+.faq.faq-open .faq-question .title h6,
+.faq.active .h7,
+.faq.faq-open .h7 {
+    color: #671BB3 !important;
+}
+
+.faq .faq-question {
+    cursor: pointer;
+}
+
 /* Team card styles */
 .team-card {
     position: relative;
@@ -338,6 +405,51 @@ header.header .header-sub-menu a span,
     display: none !important;
     visibility: hidden !important;
     opacity: 0 !important;
+}
+
+/* FAQ Question Text - Must be large */
+.faq-q-text,
+span.faq-q-text,
+.faq-accordion-item .faq-q-text,
+.faq-accordion-btn .faq-q-text,
+.faq-accordion-left .faq-q-text {
+    font-size: 24px !important;
+    font-family: 'Manrope', sans-serif !important;
+    font-weight: 600 !important;
+    text-transform: none !important;
+    letter-spacing: 0 !important;
+}
+
+/* FAQ Answer Text - Must be larger */
+.faq-answer-p,
+.faq-accordion-answer .faq-answer-p,
+.faq-answer-inner .faq-answer-p {
+    font-size: 20px !important;
+    font-family: 'Manrope', sans-serif !important;
+    line-height: 1.7 !important;
+}
+
+/* Search Input Text - Must be larger */
+.search-input input,
+.search-input input[type="text"],
+input#newsSearch,
+input#jobs-search-input,
+input.text-10,
+.search-input input::placeholder,
+input[type="text"]::placeholder {
+    font-size: 16px !important;
+}
+
+/* Filter dropdowns - Must be larger */
+.dropdown select,
+.startup-filter-select,
+select.startup-filter-select,
+#cohortFilter,
+#trackFilter,
+#statusFilter,
+.filter-select,
+.dropdown option {
+    font-size: 16px !important;
 }
 		</style>
 		</head>
@@ -3539,12 +3651,16 @@ $faqData = [
 }
 
 .faq-q-text {
-    font-family: 'Manrope', sans-serif;
-    font-size: clamp(0.85rem, 1.5vw, 1.1rem);
-    font-weight: 600;
-    color: #1c1c1c;
-    text-transform: uppercase;
-    letter-spacing: 0.02em;
+    font-family: 'Manrope', sans-serif !important;
+    font-size: 24px !important;
+    font-weight: 600 !important;
+    color: #1c1c1c !important;
+    text-transform: none !important;
+    letter-spacing: 0 !important;
+}
+
+.faq-accordion-item .faq-accordion-btn .faq-accordion-left .faq-q-text {
+    font-size: 24px !important;
 }
 
 .faq-plus {
@@ -3598,7 +3714,7 @@ $faqData = [
 
 .faq-answer-p {
     font-family: 'Manrope', sans-serif;
-    font-size: 1rem;
+    font-size: 1.25rem;
     line-height: 1.7;
     color: #1c1c1c;
     margin: 0;
@@ -4368,7 +4484,7 @@ $faqData = [
         <div class="flex items-center justify-between mb-10">
             <h4 class="fs-h4 js-color-text text-c-black uppercase">ELIZABETH ELTING FUND STARTUPS</h4>
             <div class="hidden md:flex items-center justify-between w-150">
-                <div class="prev-btn" role="button" aria-label="previous-card">
+                <div class="prev-btn eef-prev-btn" role="button" aria-label="previous-card" onclick="document.getElementById('eef-swiper').swiper.slidePrev()" style="cursor:pointer;">
                     <button class="js-magnetic-button w-fit p-50 m-[-50px]" title="" name="" type="">
                         <div>
                             <div class="button js-c-button functional-button small "
@@ -4381,15 +4497,14 @@ $faqData = [
                                 <div class="button__content w-full h-full outlineBlack">
                                     <div class="line !border-black"></div>
                                     <div class="button__content__center">
-                                        <div class="img-to-svg button__content__center__icon stroke-black"
-                                            data-src="https://endlessfrontierlabs.com/wp-content/themes/efl/assets/arrows/black-left.svg"></div>
+                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M15 18L9 12L15 6" stroke="#000000" stroke-width="2"/></svg>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </button>
                 </div>
-                <div class="next-btn" role="button" aria-label="next-card">
+                <div class="next-btn eef-next-btn" role="button" aria-label="next-card" onclick="document.getElementById('eef-swiper').swiper.slideNext()" style="cursor:pointer;">
                     <button class="js-magnetic-button w-fit p-50 m-[-50px]" title="" name="" type="">
                         <div>
                             <div class="button js-c-button functional-button small "
@@ -4402,8 +4517,7 @@ $faqData = [
                                 <div class="button__content w-full h-full outlineBlack">
                                     <div class="line !border-black"></div>
                                     <div class="button__content__center">
-                                        <div class="img-to-svg button__content__center__icon stroke-black"
-                                            data-src="https://endlessfrontierlabs.com/wp-content/themes/efl/assets/arrows/black-right.svg"></div>
+                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M9 18L15 12L9 6" stroke="#000000" stroke-width="2"/></svg>
                                     </div>
                                 </div>
                             </div>
@@ -4416,7 +4530,7 @@ $faqData = [
         <p class="max-w-full w-[550px] js-color-text text-c-black fs-p1 js-s-lines">Elizabeth Elting Venture Fund Award winners are powering change through groundbreaking innovations in the sciences and technology fields.</p>
     </div>
 
-    <div id="track-startup-swiper" class="swiper wrapper" style="padding-bottom: 30px;">
+    <div id="eef-swiper" class="swiper wrapper" style="padding-bottom: 30px;">
         <div class="swiper-wrapper" style="max-width: 550px;">
             <!-- geCKo Materials -->
             <div class="swiper-slide">
@@ -4750,7 +4864,7 @@ $faqData = [
         <div class="flex items-center justify-between">
             <h4 class="fs-h4 text-white uppercase">STUDENT SPOTLIGHT</h4>
             <div class="hidden md:flex items-center justify-between w-150">
-                <div class="prev-btn" role="button" aria-label="previous-card">
+                <div class="prev-btn student-spotlight-prev" role="button" aria-label="previous-card" onclick="document.getElementById('student-spotlight-swiper').swiper.slidePrev()" style="cursor:pointer;">
                     <button class="js-magnetic-button w-fit p-50 m-[-50px]" title="" name="" type="">
                         <div>
                             <div class="button js-c-button functional-button small "
@@ -4763,15 +4877,14 @@ $faqData = [
                                 <div class="button__content w-full h-full outlineDifference">
                                     <div class="line !border-white"></div>
                                     <div class="button__content__center">
-                                        <div class="img-to-svg button__content__center__icon stroke"
-                                            data-src="https://endlessfrontierlabs.com/wp-content/themes/efl/assets/arrows/white-left.svg"></div>
+                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M15 18L9 12L15 6" stroke="#ffffff" stroke-width="2"/></svg>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </button>
                 </div>
-                <div class="next-btn" role="button" aria-label="next-card">
+                <div class="next-btn student-spotlight-next" role="button" aria-label="next-card" onclick="document.getElementById('student-spotlight-swiper').swiper.slideNext()" style="cursor:pointer;">
                     <button class="js-magnetic-button w-fit p-50 m-[-50px]" title="" name="" type="">
                         <div>
                             <div class="button js-c-button functional-button small "
@@ -4784,8 +4897,7 @@ $faqData = [
                                 <div class="button__content w-full h-full outlineDifference">
                                     <div class="line !border-white"></div>
                                     <div class="button__content__center">
-                                        <div class="img-to-svg button__content__center__icon stroke"
-                                            data-src="https://endlessfrontierlabs.com/wp-content/themes/efl/assets/arrows/white-right.svg"></div>
+                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M9 18L15 12L9 6" stroke="#ffffff" stroke-width="2"/></svg>
                                     </div>
                                 </div>
                             </div>
@@ -4795,7 +4907,7 @@ $faqData = [
             </div>
         </div>
         <div class="w-full h-1 bg-white my-20"></div>
-        <div id="team-swiper" class="swiper mt-6 !overflow-visible">
+        <div id="student-spotlight-swiper" class="swiper mt-6 !overflow-visible">
             <div class="swiper-wrapper">
                 <!-- Meaghan Lavin -->
                 <div class="swiper-slide">
@@ -7083,8 +7195,11 @@ The startup represented here is a graduate of Endless Frontier Labs' predecessor
         document.querySelectorAll('.img-to-svg[data-src]').forEach(function(el) {
             var src = el.getAttribute('data-src');
             if (src) {
-                fetch(src)
-                    .then(response => response.text())
+                fetch(src, { mode: 'cors' })
+                    .then(response => {
+                        if (!response.ok) throw new Error('Failed to load');
+                        return response.text();
+                    })
                     .then(svgText => {
                         var parser = new DOMParser();
                         var svgDoc = parser.parseFromString(svgText, 'image/svg+xml');
@@ -7095,13 +7210,34 @@ The startup represented here is a graduate of Endless Frontier Labs' predecessor
                         }
                     })
                     .catch(() => {
-                        // Fallback: create simple arrow icon based on src
-                        if (src.includes('arrow_down')) {
-                            el.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M6 9L12 15L18 9" stroke="currentColor" stroke-width="2"/></svg>';
+                        // Fallback SVGs for common icons
+                        var svgContent = '';
+                        var strokeColor = 'currentColor';
+                        if (src.includes('black')) strokeColor = '#000000';
+                        else if (src.includes('white')) strokeColor = '#ffffff';
+                        
+                        if (src.includes('twitter')) {
+                            svgContent = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>';
+                        } else if (src.includes('linkedin')) {
+                            svgContent = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>';
+                        } else if (src.includes('Email') || src.includes('email') || src.includes('mail')) {
+                            svgContent = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 6L12 13L2 6"/></svg>';
+                        } else if (src.includes('arrow_down')) {
+                            svgContent = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M6 9L12 15L18 9" stroke="' + strokeColor + '" stroke-width="2"/></svg>';
                         } else if (src.includes('left')) {
-                            el.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M15 18L9 12L15 6" stroke="currentColor" stroke-width="2"/></svg>';
+                            svgContent = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M15 18L9 12L15 6" stroke="' + strokeColor + '" stroke-width="2"/></svg>';
                         } else if (src.includes('right')) {
-                            el.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M9 18L15 12L9 6" stroke="currentColor" stroke-width="2"/></svg>';
+                            svgContent = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M9 18L15 12L9 6" stroke="' + strokeColor + '" stroke-width="2"/></svg>';
+                        }
+                        if (svgContent) {
+                            var parser = new DOMParser();
+                            var svgDoc = parser.parseFromString(svgContent, 'image/svg+xml');
+                            var svg = svgDoc.querySelector('svg');
+                            if (svg && el.parentNode) {
+                                svg.classList.add(...el.classList);
+                                svg.classList.remove('img-to-svg');
+                                el.parentNode.replaceChild(svg, el);
+                            }
                         }
                     });
             }
@@ -7127,16 +7263,98 @@ The startup represented here is a graduate of Endless Frontier Labs' predecessor
             });
         }
         
-        // Initialize other swipers (startups, mentors, student spotlight, etc.)
+        // Initialize EEF Swiper (Elizabeth Elting Fund)
+        if (document.getElementById('eef-swiper')) {
+            new Swiper('#eef-swiper', {
+                slidesPerView: 'auto',
+                spaceBetween: 20,
+                freeMode: true,
+                grabCursor: true,
+                breakpoints: {
+                    320: { slidesPerView: 1.2, spaceBetween: 15 },
+                    640: { slidesPerView: 2.2, spaceBetween: 20 },
+                    1024: { slidesPerView: 3, spaceBetween: 25 }
+                }
+            });
+        }
+        
+        // Initialize other swipers (startups, mentors, etc.)
         document.querySelectorAll('.swiper').forEach(function(el) {
-            if (!el.swiper && el.id !== 'team-swiper') {
+            if (!el.swiper && el.id !== 'team-swiper' && el.id !== 'eef-swiper') {
                 new Swiper(el, {
                     slidesPerView: 'auto',
                     spaceBetween: 20,
                     freeMode: true,
-                    grabCursor: true
+                    grabCursor: true,
+                    breakpoints: {
+                        320: { slidesPerView: 1.2, spaceBetween: 15 },
+                        640: { slidesPerView: 2.2, spaceBetween: 20 },
+                        1024: { slidesPerView: 3, spaceBetween: 25 }
+                    }
                 });
             }
+        });
+        
+        // ============ FAQ ACCORDION FUNCTIONALITY ============
+        // Handle all FAQ accordions across the site
+        document.querySelectorAll('.faq-question, [data-faq-btn]').forEach(function(btn) {
+            if (btn.hasAttribute('data-faq-listener-bound')) return;
+            btn.setAttribute('data-faq-listener-bound', 'true');
+            
+            btn.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                
+                // Find the FAQ item container
+                var faqItem = this.closest('.faq') || this.closest('[data-faq-item]') || this.closest('.faq-accordion-item');
+                if (!faqItem) return;
+                
+                // Find the answer element
+                var answer = faqItem.querySelector('.faq-answer') || faqItem.querySelector('.faq-accordion-answer');
+                var plusSymbol = faqItem.querySelector('.plus-symbol');
+                var plusLine = faqItem.querySelector('.plus-line');
+                
+                // Check if currently open
+                var isOpen = faqItem.classList.contains('faq-open') || faqItem.classList.contains('active');
+                
+                // Close all FAQs in the same section
+                var section = faqItem.closest('.faqs-section') || faqItem.closest('.faqs-content-section') || faqItem.parentElement;
+                if (section) {
+                    section.querySelectorAll('.faq, [data-faq-item], .faq-accordion-item').forEach(function(item) {
+                        item.classList.remove('faq-open', 'active');
+                        var itemAnswer = item.querySelector('.faq-answer') || item.querySelector('.faq-accordion-answer');
+                        var itemPlus = item.querySelector('.plus-symbol');
+                        var itemPlusLine = item.querySelector('.plus-line');
+                        if (itemAnswer) {
+                            itemAnswer.style.height = '0';
+                            itemAnswer.style.maxHeight = '0';
+                        }
+                        if (itemPlus) {
+                            itemPlus.classList.remove('opacity-100', 'scale-100');
+                            itemPlus.classList.add('opacity-0', 'scale-0');
+                        }
+                        if (itemPlusLine) {
+                            itemPlusLine.style.transform = '';
+                        }
+                    });
+                }
+                
+                // Toggle current item
+                if (!isOpen) {
+                    faqItem.classList.add('faq-open', 'active');
+                    if (answer) {
+                        answer.style.height = 'auto';
+                        answer.style.maxHeight = '600px';
+                    }
+                    if (plusSymbol) {
+                        plusSymbol.classList.remove('opacity-0', 'scale-0');
+                        plusSymbol.classList.add('opacity-100', 'scale-100');
+                    }
+                    if (plusLine) {
+                        plusLine.style.transform = 'rotate(90deg)';
+                    }
+                }
+            });
         });
         
         // ============ MENU FUNCTIONALITY ============
