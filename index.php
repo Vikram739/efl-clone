@@ -1,15 +1,11 @@
 ﻿<?php
 /*
-================================================================================
-FILE: index.php
-PROJECT: Endless Frontier Labs (EFL) - Single Page Application
-================================================================================
+
 
 WHAT THIS FILE DOES:
-This is the main entry point of the Endless Frontier Labs website. It acts as
-a Single Page Application (SPA) router — meaning instead of having many
-separate .php files for each page, this one file handles all pages. Based on
-what page a visitor requests (e.g. /efl/mentors or /efl/startups), PHP reads
+This is the main entry point of the Endless Frontier Labs website.
+ this one file handles all pages. Based on what page a visitor requests
+  (e.g. /efl/mentors or /efl/startups), PHP reads
 the URL, decides which page to show, and sets the correct browser tab title.
 The rest of the file is the full HTML structure of the site, including the
 navigation, all page content sections, and JavaScript. At the very bottom
