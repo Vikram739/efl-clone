@@ -1,14 +1,148 @@
 ﻿<?php
-// Single Page Application - PHP Router
+/*
+================================================================================
+FILE: index.php
+PROJECT: Endless Frontier Labs (EFL) - Single Page Application
+================================================================================
+
+WHAT THIS FILE DOES:
+This is the main entry point of the Endless Frontier Labs website. It acts as
+a Single Page Application (SPA) router — meaning instead of having many
+separate .php files for each page, this one file handles all pages. Based on
+what page a visitor requests (e.g. /efl/mentors or /efl/startups), PHP reads
+the URL, decides which page to show, and sets the correct browser tab title.
+The rest of the file is the full HTML structure of the site, including the
+navigation, all page content sections, and JavaScript. At the very bottom
+there is also a database layer (currently inactive) built for future use.
+
+================================================================================
+CORE PHP FEATURES USED IN THIS FILE:
+================================================================================
+
+1. $_GET Superglobal
+   - Used to read the 'page' parameter from the URL (e.g. ?page=mentors).
+   - This is how PHP knows which page the visitor is trying to view.
+
+2. isset() & empty()
+   - Used to safely check whether the 'page' URL parameter exists before
+     reading it, preventing PHP errors when it is missing.
+
+3. trim()
+   - Used to clean up the page name by stripping any leading or trailing
+     forward slashes ("/") from the URL input.
+
+4. Associative Arrays
+   - Used in two places: the $validPages list (to whitelist allowed pages)
+     and the $pageTitles map (to look up the correct browser tab title for
+     each page). Arrays are one of PHP's most powerful data structures.
+
+5. in_array()
+   - Used to validate that the requested page is in the list of allowed pages.
+     This is a security measure to prevent invalid or unexpected page names.
+
+6. Null Coalescing Operator (??)
+   - Used as a shorthand fallback: if the requested page has no title defined
+     in $pageTitles, it defaults to 'Endless Frontier Labs'.
+
+7. htmlspecialchars()
+   - Used when printing the page title into the HTML <title> tag. This
+     converts special characters (like <, >, &) into safe HTML equivalents,
+     protecting against Cross-Site Scripting (XSS) attacks.
+
+8. Ternary Operator (?:)
+   - Used for compact one-line if/else decisions, such as setting the default
+     page to 'home' if no page is specified in the URL.
+
+9. Constants (define())
+   - Used in the database layer to store configuration values like the database
+     host, name, username, and password in one central place.
+
+10. Classes & OOP (Object-Oriented Programming)
+    - The Database class uses the Singleton design pattern, ensuring only one
+      database connection is created and reused throughout the application,
+      which is efficient and avoids connection overhead.
+
+11. PDO (PHP Data Objects)
+    - Used in the database layer to connect to MySQL safely. PDO supports
+      prepared statements, which prevent SQL injection attacks. It is the
+      modern, recommended way to interact with databases in PHP.
+
+12. Prepared Statements & Parameterized Queries
+    - Used in all database functions to safely pass user input into SQL
+      queries. Parameters are bound separately from the query itself, so
+      malicious input cannot alter the query's structure.
+
+13. try / catch Exception Handling
+    - Wraps all database operations so that if something goes wrong (e.g.
+      the database is unavailable), the error is logged quietly and the site
+      continues to work rather than crashing.
+
+14. error_log()
+    - Used to silently write error messages to the server's error log file
+      instead of displaying them to users, which is best practice for
+      production websites.
+
+15. foreach Loop
+    - Used in the database layer to iterate over query results and group
+      FAQ entries by their category.
+
+================================================================================
+*/
+
+// ============================================================
+// SECTION 1: URL ROUTING — Determine which page to display
+// ============================================================
+
+/*
+   This is the PHP router — the brain of the Single Page Application.
+   When a visitor goes to a URL like /efl/mentors, the web server sends the
+   'page' value as a GET parameter (e.g. ?page=mentors). PHP reads that value
+   here and decides what content to show. This approach is preferred over
+   having dozens of separate files because it keeps routing logic centralized,
+   reduces code duplication, and makes the site easier to maintain.
+*/
+/*
+   $_GET['page'] reads the 'page' value from the URL (e.g. ?page=mentors).
+   isset() checks it exists before reading — prevents PHP errors on a plain visit.
+   trim(..., '/') removes any accidental slashes like /mentors/ → mentors.
+   The ternary operator (?:) means: "if page exists, use it; otherwise default to 'home'."
+*/
 $page = isset($_GET['page']) ? trim($_GET['page'], '/') : 'home';
+/*
+   A second safety check: if the page ended up as an empty string
+   (e.g. the URL was just /efl/ with no page name), default back to 'home'.
+*/
 if (empty($page)) $page = 'home';
+
+/*
+   SECURITY — Whitelist Validation:
+   $validPages is an indexed array listing every page name the site allows.
+   in_array() checks if the requested page is in this list. If it's NOT,
+   we reset $page to 'home'. This prevents users from requesting arbitrary
+   page names that could cause errors or expose unintended content.
+   Using a whitelist (allow-only-known-values) is the safest validation approach.
+*/
 $validPages = ['home', 'about', 'program', 'mentors', 'startups', 'news', 'faqs', 'connect', 'team', 'our-mission', 'elizabeth-elting-fund', 'mba', 'young-ambassadors', 'jobs', 'deep-tech', 'digital-health', 'digital-tech', 'life-science'];
 if (!in_array($page, $validPages)) {
-    $page = 'home';
+    $page = 'home'; // Unknown page? Safely fall back to home.
 }
+
+/*
+   The 'about' URL is treated as an alias for 'home'. Both point to the same
+   content. This handles cases where old links or nav items use /about
+   but the canonical page is /home.
+*/
 // Map 'about' to 'home' for display
 if ($page === 'about') $page = 'home';
 
+/*
+   $pageTitles is an associative array that maps each page slug (key) to a
+   human-readable browser tab title (value). Associative arrays use named keys
+   instead of numbered indexes, making lookups fast and the code very readable.
+   Each title follows the format "Page Name - Endless Frontier Labs" which is
+   also good for SEO (search engine optimization), as descriptive page titles
+   help search engines understand what each page is about.
+*/
 // Page titles
 $pageTitles = [
     'home' => 'Endless Frontier Labs',
@@ -29,6 +163,12 @@ $pageTitles = [
     'digital-tech' => 'Digital Tech Track - Endless Frontier Labs',
     'life-science' => 'Life Science Track - Endless Frontier Labs',
 ];
+/*
+   The null coalescing operator (??) looks up the current page's title in the
+   $pageTitles array. If the page somehow doesn't have a title defined (which
+   shouldn't happen after validation above, but is a good safety net), it falls
+   back to the generic site name. This avoids a PHP "undefined index" error.
+*/
 $pageTitle = $pageTitles[$page] ?? 'Endless Frontier Labs';
 ?>
 <!DOCTYPE html>
@@ -39,6 +179,15 @@ $pageTitle = $pageTitles[$page] ?? 'Endless Frontier Labs';
     <meta name="theme-color" content="#000">
   	<link href="https://endlessfrontierlabs.com/wp-content/themes/efl/dist/app.css?v=1771339067" rel="stylesheet">
 
+	<!--
+        SECURITY — htmlspecialchars():
+        Before printing the $pageTitle variable into the HTML, we wrap it in
+        htmlspecialchars(). This converts any special characters (like < > & " ')
+        into their safe HTML equivalents (&lt; &gt; &amp; etc.). This prevents
+        a type of attack called Cross-Site Scripting (XSS), where a malicious
+        user might try to inject HTML or JavaScript into the page through the URL.
+        Always use htmlspecialchars() when outputting PHP variables into HTML.
+    -->
 	<title><?php echo htmlspecialchars($pageTitle); ?></title>
     <meta property="og:site_name" content="EFL">
 	<meta property="og:type" content="website">
@@ -7649,22 +7798,66 @@ DATABASE SETUP:
 // ============================================================
 // DATABASE CONFIGURATION
 // ============================================================
-define('DB_HOST', 'localhost');
-define('DB_NAME', 'efl_database');
-define('DB_USER', 'root');
-define('DB_PASS', '');
+/*
+   PHP constants (defined with define()) are like variables that can never be
+   changed after they are set. Using constants for configuration values like
+   database credentials is best practice because it makes them globally
+   accessible without passing them around, and signals to other developers
+   that these values are fixed settings, not data that changes at runtime.
+   In a real production environment, these values would be stored in a
+   separate config file that is NOT committed to version control (e.g. .env),
+   to keep credentials private and secure.
+*/
+define('DB_HOST', 'localhost');  // The server where MySQL is running
+define('DB_NAME', 'efl_database'); // The name of the database to connect to
+define('DB_USER', 'root');         // The MySQL username
+define('DB_PASS', '');             // The MySQL password (empty for local dev)
 
 // ============================================================
 // DATABASE CONNECTION CLASS (Singleton Pattern with PDO)
 // ============================================================
+/*
+   This class manages the database connection using two important concepts:
+
+   1. SINGLETON PATTERN: A design pattern that ensures only ONE instance of
+      the Database class is ever created. The first time Database::getInstance()
+      is called, it creates the connection and stores it in $instance. Every
+      call after that reuses the same connection instead of creating a new one.
+      This is efficient because opening a database connection has overhead —
+      creating one per request (or per function call) would slow the site down.
+
+   2. PDO (PHP Data Objects): The modern PHP standard for connecting to
+      databases. PDO is preferred over older mysql_ functions because:
+      - It supports prepared statements (which prevent SQL injection attacks)
+      - It works with multiple database types (MySQL, PostgreSQL, SQLite, etc.)
+      - It provides a clean, object-oriented interface
+      - It has proper error handling via exceptions
+
+   The private constructor prevents this class from being instantiated with
+   "new Database()" directly — you must use Database::getInstance(), which
+   enforces the singleton pattern.
+*/
 class Database {
     private static $instance = null;
     private $pdo;
     
     private function __construct() {
         try {
-            // PDO connection with prepared statement support
+            /*
+               The DSN (Data Source Name) is a string that tells PDO how to
+               connect to the database. It specifies the driver (mysql), the
+               host server, database name, and character set (utf8mb4 supports
+               all Unicode characters including emojis).
+            */
             $dsn = "mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . ";charset=utf8mb4";
+
+            /*
+               PDO options configure how the connection behaves:
+               - ERRMODE_EXCEPTION: Throws PHP exceptions on errors (best for debugging)
+               - FETCH_ASSOC: Returns query results as associative arrays by default
+               - EMULATE_PREPARES false: Uses real database-level prepared statements
+                 instead of simulated ones, which is more secure against SQL injection
+            */
             $options = [
                 PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
                 PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
@@ -7672,11 +7865,22 @@ class Database {
             ];
             $this->pdo = new PDO($dsn, DB_USER, DB_PASS, $options);
         } catch (PDOException $e) {
+            /*
+               If the connection fails, we log the real error message to the
+               server log (hidden from users) and throw a generic exception.
+               This means users see a clean error, not sensitive server details.
+            */
             error_log("Database connection failed: " . $e->getMessage());
             throw new Exception("Database connection failed.");
         }
     }
     
+    /*
+       getInstance() is the public entry point for getting the database connection.
+       It checks if an instance already exists — if not, it creates one. If yes,
+       it returns the existing one. This "lazy initialization" means the connection
+       is only opened when it's actually needed, not on every page load.
+    */
     public static function getInstance() {
         if (self::$instance === null) {
             self::$instance = new self();
@@ -7690,10 +7894,34 @@ class Database {
 // ============================================================
 // DATA ACCESS FUNCTIONS WITH SQL QUERIES
 // ============================================================
+/*
+   Each function below handles one type of data retrieval from the database.
+   All functions follow the same safe pattern:
+   1. Get the PDO connection via the singleton
+   2. Build the SQL query string
+   3. Use prepare() + execute() with named parameters (:param) instead of
+      putting user input directly into the SQL string — this is called a
+      "parameterized query" or "prepared statement" and is the #1 way to
+      prevent SQL injection attacks
+   4. Wrap everything in try/catch so database errors don't crash the page
+   5. Return an empty array [] if anything goes wrong, so the rest of the
+      page still renders gracefully
+*/
 
 /**
- * Get mentors with optional filtering
- * SQL: SELECT * FROM mentors WHERE is_active = 1 AND tracks LIKE '%track%' ORDER BY name
+ * getMentorsFromDB() — Fetch Active Mentors with Optional Filtering
+ *
+ * This function retrieves mentor records from the 'mentors' database table.
+ * It supports two optional filters: track (e.g. "Deep Tech") and mentor type
+ * (e.g. "Industry Expert"). If no filters are passed, all active mentors are
+ * returned. Filters are applied dynamically — the SQL query is built up as a
+ * string and parameters are collected in the $params array, then bound safely
+ * via PDO's prepare/execute pattern. This avoids SQL injection because user
+ * input is never directly embedded in the query string. Results are sorted
+ * alphabetically by name for consistent display on the Mentors page.
+ *
+ * SQL used: SELECT ... FROM mentors WHERE is_active = 1 [AND tracks LIKE :track]
+ *           [AND mentor_type = :type] ORDER BY name ASC
  */
 function getMentorsFromDB($trackFilter = '', $typeFilter = '') {
     try {
@@ -7703,6 +7931,12 @@ function getMentorsFromDB($trackFilter = '', $typeFilter = '') {
                 FROM mentors WHERE is_active = 1";
         $params = [];
         
+        /*
+           SECURITY — Parameterized Queries:
+           Instead of writing "WHERE tracks LIKE '%" . $trackFilter . "%'" (which
+           would be vulnerable to SQL injection), we use named placeholders like
+           :track and :type. PDO handles the escaping safely when execute() is called.
+        */
         // Parameterized query for security - prevents SQL injection
         if (!empty($trackFilter)) {
             $sql .= " AND tracks LIKE :track";
@@ -7724,8 +7958,18 @@ function getMentorsFromDB($trackFilter = '', $typeFilter = '') {
 }
 
 /**
- * Get startups with filtering
- * SQL: SELECT * FROM startups WHERE is_active = 1 AND track = ? ORDER BY name
+ * getStartupsFromDB() — Fetch Active Startups with Optional Filtering
+ *
+ * This function retrieves startup records from the 'startups' table. It supports
+ * three optional filters: track (e.g. "Digital Health"), cohort (e.g. "2024"),
+ * and status (e.g. "Active"). Like getMentorsFromDB(), filters are applied
+ * dynamically using the same safe parameterized query approach. Returning only
+ * active startups (is_active = 1) means soft-deleted records remain in the
+ * database for record-keeping but don't appear on the site — a common and
+ * recommended pattern called "soft deletion."
+ *
+ * SQL used: SELECT ... FROM startups WHERE is_active = 1 [AND track = :track]
+ *           [AND cohort = :cohort] [AND status = :status] ORDER BY name ASC
  */
 function getStartupsFromDB($trackFilter = '', $cohortFilter = '', $statusFilter = '') {
     try {
@@ -7759,9 +8003,22 @@ function getStartupsFromDB($trackFilter = '', $cohortFilter = '', $statusFilter 
 }
 
 /**
- * Get FAQs with JOIN query
- * SQL: SELECT fc.name, f.question, f.answer FROM faqs f 
- *      INNER JOIN faq_categories fc ON f.category_id = fc.id
+ * getFAQsFromDB() — Fetch FAQs Grouped by Category Using a SQL JOIN
+ *
+ * This function retrieves FAQ entries from the database and groups them by
+ * their category for organized display on the FAQs page. It uses a SQL INNER
+ * JOIN to combine two tables: 'faqs' (which holds individual questions and
+ * answers) and 'faq_categories' (which holds category names). A JOIN is the
+ * correct choice here because FAQ categories are stored separately to avoid
+ * data duplication — instead of writing the category name on every FAQ row,
+ * we store it once and reference it via category_id. After fetching the flat
+ * list of results, a PHP foreach loop groups them into a nested associative
+ * array keyed by category name, which is easy to loop over in the HTML template.
+ *
+ * SQL used: SELECT fc.name, f.question, f.answer FROM faqs f
+ *           INNER JOIN faq_categories fc ON f.category_id = fc.id
+ *           WHERE f.is_active = 1 AND fc.is_active = 1
+ *           ORDER BY fc.sort_order ASC, f.sort_order ASC
  */
 function getFAQsFromDB() {
     try {
@@ -7775,6 +8032,12 @@ function getFAQsFromDB() {
         $stmt = $db->query($sql);
         $results = $stmt->fetchAll();
         
+        /*
+           The SQL JOIN returns a flat list of rows (one row per FAQ), but the
+           frontend needs FAQs grouped by category. This foreach loop builds a
+           nested associative array: keys are category names, values are arrays
+           of question/answer pairs belonging to that category.
+        */
         // Group results by category
         $grouped = [];
         foreach ($results as $row) {
@@ -7795,8 +8058,20 @@ function getFAQsFromDB() {
 }
 
 /**
- * Get jobs with LIMIT and DATE_FORMAT
- * SQL: SELECT title, DATE_FORMAT(post_date, '%m/%d/%Y') FROM jobs ORDER BY post_date DESC
+ * getJobsFromDB() — Fetch Active Job Listings with Optional Limit
+ *
+ * This function retrieves job postings from the 'jobs' table, ordered by most
+ * recent first. It uses MySQL's DATE_FORMAT() function to convert the raw date
+ * value stored in the database (e.g. 2024-09-15) into a human-friendly display
+ * format (09/15/2024), so no extra formatting is needed in PHP. An optional
+ * $limit parameter allows callers to request only a subset of jobs — for example,
+ * showing only the 3 most recent jobs on the homepage while showing all jobs on
+ * the full Jobs page. The LIMIT clause is added to the SQL string conditionally
+ * and bound as an integer parameter for security.
+ *
+ * SQL used: SELECT id, title, DATE_FORMAT(post_date, '%m/%d/%Y') as date,
+ *           image_url as image, job_link as link FROM jobs WHERE is_active = 1
+ *           ORDER BY post_date DESC [LIMIT :limit]
  */
 function getJobsFromDB($limit = 0) {
     try {
@@ -7824,8 +8099,17 @@ function getJobsFromDB($limit = 0) {
 }
 
 /**
- * Aggregate functions - COUNT
- * SQL: SELECT COUNT(*) FROM startups WHERE is_active = 1
+ * getStartupCount() / getMentorCount() — Count Active Records Using SQL COUNT(*)
+ *
+ * These two functions return a single integer: the total number of active
+ * startups or mentors in the database. SQL's COUNT(*) aggregate function counts
+ * all matching rows in one efficient database operation — much faster than
+ * fetching all rows and counting them in PHP. The result is cast to (int) to
+ * ensure PHP treats it as a number, not a string, which is important if the
+ * count is used in arithmetic or comparisons. These counts are typically used
+ * to display stats like "200+ Mentors" on the homepage.
+ *
+ * SQL used: SELECT COUNT(*) as count FROM [table] WHERE is_active = 1
  */
 function getStartupCount() {
     try {
@@ -7844,8 +8128,19 @@ function getMentorCount() {
 }
 
 /**
- * Search with LIKE operator
- * SQL: SELECT * FROM mentors WHERE name LIKE '%search%'
+ * searchMentors() — Full-Text Style Mentor Search Using SQL LIKE
+ *
+ * This function accepts a search term typed by the user and finds mentors
+ * whose names contain that term. It uses the SQL LIKE operator with wildcard
+ * characters (%) on both sides of the search term — meaning it matches the
+ * term anywhere in the name (beginning, middle, or end). For example, searching
+ * "an" would match "Jane", "Hannah", and "Andre". The search term is passed as
+ * a parameterized value (:search) rather than embedded directly in the SQL,
+ * which prevents SQL injection even for user-typed search input. Results are
+ * returned alphabetically so the output is predictable and easy to scan.
+ *
+ * SQL used: SELECT ... FROM mentors WHERE is_active = 1 AND name LIKE :search
+ *           ORDER BY name ASC   (where :search = '%userInput%')
  */
 function searchMentors($searchTerm) {
     try {
