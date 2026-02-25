@@ -2,7 +2,7 @@
 
 > A pixel-faithful recreation of [EFL Website](https://endlessfrontierlabs.com/) — built as a Software Engineering Internship task at **NYU's Endless Frontier Labs**.
 
-🔗 **Live Demo:** [https://efl-clone.com](https://efl-clone.free.nf/)
+🔗 **Live Demo:** [https://efl-clone.free.nf](https://efl-clone.free.nf/)
 
 ---
 
@@ -42,7 +42,7 @@ git clone https://github.com/Vikram739/efl-clone.git
 
 ## 🌍 Live Preview
 
-👉 [https://efl-clone.com/](https://efl-clone.free.nf/)
+👉 [https://efl-clone.free.nf/](https://efl-clone.free.nf/)
 
 ---
 
